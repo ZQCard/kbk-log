@@ -1,0 +1,215 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: 日志服务
+    description: 日志服务
+    contact:
+        name: your name
+    version: 0.0.1
+paths:
+    /log:
+        get:
+            tags:
+                - LogService
+            description: 列表
+            operationId: LogService_GetLogList
+            parameters:
+                - name: page
+                  in: query
+                  description: 主键id
+                  schema:
+                    type: integer
+                    format: int64
+                - name: pageSize
+                  in: query
+                  description: 页记录数
+                  schema:
+                    type: integer
+                    format: int64
+                - name: name
+                  in: query
+                  description: 名称
+                  schema:
+                    type: string
+                - name: userId
+                  in: query
+                  description: userId
+                  schema:
+                    type: string
+                - name: username
+                  in: query
+                  description: 用户名
+                  schema:
+                    type: string
+                - name: role
+                  in: query
+                  description: 角色
+                  schema:
+                    type: string
+                - name: operation
+                  in: query
+                  description: 路径
+                  schema:
+                    type: string
+                - name: ip
+                  in: query
+                  description: ip
+                  schema:
+                    type: string
+                - name: traceId
+                  in: query
+                  description: trace_id
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/log.v1.GetLogListPageRes'
+        post:
+            tags:
+                - LogService
+            description: 创建
+            operationId: LogService_CreateLog
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/log.v1.CreateLogReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/log.v1.CheckResponse'
+components:
+    schemas:
+        log.v1.CheckResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+            description: 响应 - 检查是否处理成功
+        log.v1.CreateLogReq:
+            type: object
+            properties:
+                traceId:
+                    type: string
+                    description: trace id
+                component:
+                    type: string
+                    description: http/rpc
+                name:
+                    type: string
+                    description: 表
+                latency:
+                    type: string
+                    description: 响应时长
+                userId:
+                    type: string
+                    description: 用户id
+                method:
+                    type: string
+                    description: 请求方式
+                path:
+                    type: string
+                    description: 请求路径
+                request:
+                    type: string
+                    description: 请求内容
+                code:
+                    type: string
+                    description: 响应内容
+                reason:
+                    type: string
+                    description: 提示信息
+                ip:
+                    type: string
+                    description: 请求ip
+                createdAt:
+                    type: string
+                    description: 创建时间
+                operation:
+                    type: string
+                    description: kratos操作路径
+                username:
+                    type: string
+                    description: 用户名
+                role:
+                    type: string
+                    description: 角色
+            description: 请求 - 创建
+        log.v1.GetLogListPageRes:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: 总数
+                    format: int64
+                list:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/log.v1.Log'
+                    description: 列表
+            description: 响应 - 分页
+        log.v1.Log:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    description: 日志id
+                    format: int64
+                traceId:
+                    type: string
+                    description: trace id
+                component:
+                    type: string
+                    description: http/rpc
+                operation:
+                    type: string
+                    description: kratos操作路径
+                userId:
+                    type: string
+                    description: 用户id
+                method:
+                    type: string
+                    description: 请求方式
+                path:
+                    type: string
+                    description: 请求路径
+                request:
+                    type: string
+                    description: 请求内容
+                code:
+                    type: string
+                    description: 响应内容
+                reason:
+                    type: string
+                    description: 提示信息
+                ip:
+                    type: string
+                    description: 请求ip
+                createdAt:
+                    type: string
+                    description: 创建时间
+                name:
+                    type: string
+                    description: 名称
+                latency:
+                    type: string
+                    description: 响应时长
+                username:
+                    type: string
+                    description: 用户名
+                role:
+                    type: string
+                    description: 角色
+            description: 响应 - 日志信息
+tags:
+    - name: LogService

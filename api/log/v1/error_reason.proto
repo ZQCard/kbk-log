@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package log.v1;
+
+import "errors/errors.proto";
+
+option go_package = "github.com/ZQCard/kratos-base-kit/kbk-log/api/log/v1";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+  RECORD_NOT_FOUND = 0 [(errors.code) = 404];
+  BAD_REQUEST = 1 [(errors.code) = 400];
+  SYSTEM_ERROR = 2 [(errors.code) = 500];
+}
+
