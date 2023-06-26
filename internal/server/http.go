@@ -1,10 +1,10 @@
 package server
 
 import (
-	logV1 "github.com/ZQCard/kratos-base-kit/kbk-log/api/log/v1"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/conf"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/service"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/pkg/middleware/requestInfo"
+	logV1 "github.com/ZQCard/kbk-log/api/log/v1"
+	"github.com/ZQCard/kbk-log/internal/conf"
+	"github.com/ZQCard/kbk-log/internal/service"
+	"github.com/ZQCard/kbk-log/pkg/middleware/requestInfo"
 
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 

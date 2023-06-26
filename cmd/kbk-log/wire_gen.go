@@ -7,11 +7,11 @@
 package main
 
 import (
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/biz"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/conf"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/data"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/server"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/service"
+	"github.com/ZQCard/kbk-log/internal/biz"
+	"github.com/ZQCard/kbk-log/internal/conf"
+	"github.com/ZQCard/kbk-log/internal/data"
+	"github.com/ZQCard/kbk-log/internal/server"
+	"github.com/ZQCard/kbk-log/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"go.opentelemetry.io/otel/sdk/trace"

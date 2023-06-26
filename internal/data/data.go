@@ -14,8 +14,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/conf"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/pkg/middleware/requestInfo"
+	"github.com/ZQCard/kbk-log/internal/conf"
+	"github.com/ZQCard/kbk-log/pkg/middleware/requestInfo"
 )
 
 // ProviderSet is data providers.

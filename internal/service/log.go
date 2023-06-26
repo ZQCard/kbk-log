@@ -5,9 +5,9 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	logV1 "github.com/ZQCard/kratos-base-kit/kbk-log/api/log/v1"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/biz"
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/domain"
+	logV1 "github.com/ZQCard/kbk-log/api/log/v1"
+	"github.com/ZQCard/kbk-log/internal/biz"
+	"github.com/ZQCard/kbk-log/internal/domain"
 )
 
 type LogService struct {

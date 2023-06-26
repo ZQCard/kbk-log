@@ -1,7 +1,7 @@
 package domain
 
 import (
-	logV1 "github.com/ZQCard/kratos-base-kit/kbk-log/api/log/v1"
+	logV1 "github.com/ZQCard/kbk-log/api/log/v1"
 	"github.com/jinzhu/copier"
 )
 

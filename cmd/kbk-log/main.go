@@ -24,7 +24,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	_ "go.uber.org/automaxprocs"
 
-	"github.com/ZQCard/kratos-base-kit/kbk-log/internal/conf"
+	"github.com/ZQCard/kbk-log/internal/conf"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"

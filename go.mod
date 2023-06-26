@@ -1,4 +1,4 @@
-module github.com/ZQCard/kratos-base-kit/kbk-log
+module github.com/ZQCard/kbk-log
 
 go 1.20
 
