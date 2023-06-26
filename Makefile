@@ -126,4 +126,4 @@ initNewService:
 .PHONY: docker
 docker:
 	docker build -t kbk-log .
-	docker run -itd --name kbk-log -p 8030:8000 -p 9030:9000 -v /data/project/kbk-log/configs/:/data/conf kbk-log
+	docker run -itd --name kbk-log -p 8030:8000 -p 9030:9000 -v /data/project/kratos-base-kit/kbk-log/configs/:/data/conf kbk-log
