@@ -123,7 +123,17 @@ initNewService:
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
-.PHONY: docker
+.PHONY: docker	
 docker:
-	docker build -t kbk-log .
-	docker run -itd --name kbk-log -p 8030:8000 -p 9030:9000 -v /data/project/kratos-base-kit/kbk-log/configs/:/data/conf kbk-log
+	@git pull
+	@docker build -t kbk-log .
+	@echo "docker build success"
+	@container_id=$$(docker ps -a -f name=kbk-log -q); \
+    if [ -n "$$container_id" ]; then \
+        docker rm -f "$$container_id"; \
+        echo "Container kbk-log deleted"; \
+    else \
+        echo "Container kbk-log not found"; \
+    fi
+	docker run -itd --name kbk-log -p 8000:8000 -p 9000:9000 -v /data/project/kratos-base-kit/kbk-log/configs/:/data/conf kbk-log
+	@echo "docker start success"
