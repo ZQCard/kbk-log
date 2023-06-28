@@ -124,6 +124,7 @@ initNewService:
 	go mod tidy
 	@echo "project start success"
 	
+# 使用docker部署服务
 .PHONY: docker
 docker:
 	@git add .
