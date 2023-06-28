@@ -123,6 +123,7 @@ initNewService:
 # 拉取引用包
 	go mod tidy
 	@echo "project start success"
+	
 .PHONY: docker
 docker:
 	@git add .
