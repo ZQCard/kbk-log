@@ -10,6 +10,7 @@ import (
 	context "context"
 	http "github.com/go-kratos/kratos/v2/transport/http"
 	binding "github.com/go-kratos/kratos/v2/transport/http/binding"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -23,7 +24,7 @@ const OperationLogServiceCreateLog = "/log.v1.LogService/CreateLog"
 const OperationLogServiceGetLogList = "/log.v1.LogService/GetLogList"
 
 type LogServiceHTTPServer interface {
-	CreateLog(context.Context, *CreateLogReq) (*CheckResponse, error)
+	CreateLog(context.Context, *CreateLogReq) (*emptypb.Empty, error)
 	GetLogList(context.Context, *GetLogListReq) (*GetLogListPageRes, error)
 }
 
@@ -66,13 +67,13 @@ func _LogService_CreateLog0_HTTP_Handler(srv LogServiceHTTPServer) func(ctx http
 		if err != nil {
 			return err
 		}
-		reply := out.(*CheckResponse)
+		reply := out.(*emptypb.Empty)
 		return ctx.Result(200, reply)
 	}
 }
 
 type LogServiceHTTPClient interface {
-	CreateLog(ctx context.Context, req *CreateLogReq, opts ...http.CallOption) (rsp *CheckResponse, err error)
+	CreateLog(ctx context.Context, req *CreateLogReq, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	GetLogList(ctx context.Context, req *GetLogListReq, opts ...http.CallOption) (rsp *GetLogListPageRes, err error)
 }
 
@@ -84,8 +85,8 @@ func NewLogServiceHTTPClient(client *http.Client) LogServiceHTTPClient {
 	return &LogServiceHTTPClientImpl{client}
 }
 
-func (c *LogServiceHTTPClientImpl) CreateLog(ctx context.Context, in *CreateLogReq, opts ...http.CallOption) (*CheckResponse, error) {
-	var out CheckResponse
+func (c *LogServiceHTTPClientImpl) CreateLog(ctx context.Context, in *CreateLogReq, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
 	pattern := "/log"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationLogServiceCreateLog))

@@ -4,13 +4,7 @@ import (
 	"flag"
 	"os"
 
-	ktrus "github.com/go-kratos/kratos/contrib/log/logrus/v2"
-	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/sirupsen/logrus"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/sdk/resource"
-	"go.opentelemetry.io/otel/sdk/trace"
+	"github.com/ZQCard/kbk-log/pkg/utils/loggerHelper"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -19,9 +13,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"go.opentelemetry.io/otel/exporters/jaeger"
-	tracesdk "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	_ "go.uber.org/automaxprocs"
 
 	"github.com/ZQCard/kbk-log/internal/conf"
@@ -43,7 +34,7 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Registrar) *kratos.App {
+func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -54,18 +45,12 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Reg
 			gs,
 			hs,
 		),
-		kratos.Registrar(rr),
 	)
-}
-
-func NewLogger() log.Logger {
-	logrus.SetLevel(logrus.DebugLevel)
-	logrus.SetFormatter(&logrus.JSONFormatter{PrettyPrint: true})
-	return ktrus.NewLogger(logrus.StandardLogger())
 }
 
 func main() {
 	flag.Parse()
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -84,8 +69,8 @@ func main() {
 	// 生成服务名称, 服务发现
 	Name = bc.Service.Name
 	Version = bc.Service.Version
-	// 设置日志格式与内容
-	logger := log.With(NewLogger(),
+
+	logger := log.With(loggerHelper.NewLogger(),
 		"ts", log.DefaultTimestamp,
 		"caller", log.DefaultCaller,
 		"service.id", id,
@@ -95,17 +80,7 @@ func main() {
 		"span.id", tracing.SpanID(),
 	)
 
-	var rc conf.Registry
-	if err := c.Scan(&rc); err != nil {
-		panic(err)
-	}
-
-	tp, err := setTracerProvider(bc.Trace.Endpoint)
-	if err != nil {
-		log.Error(err)
-	}
-
-	app, cleanup, err := wireApp(bc.Env, bc.Server, &rc, bc.Data, &bc, logger, tp)
+	app, cleanup, err := wireApp(bc.Env, bc.Server, bc.Data, &bc, logger)
 	if err != nil {
 		panic(err)
 	}
@@ -115,26 +90,4 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
-}
-
-// Set global trace provider
-func setTracerProvider(url string) (tp *trace.TracerProvider, err error) {
-	// Create the Jaeger exporter
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
-	if err != nil {
-		return nil, err
-	}
-	tp = tracesdk.NewTracerProvider(
-		// Set the sampling rate based on the parent span to 100%
-		tracesdk.WithSampler(tracesdk.ParentBased(tracesdk.TraceIDRatioBased(1.0))),
-		// Always be sure to batch in production.
-		tracesdk.WithBatcher(exp),
-		// Record information about this application in an Resource.
-		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(Name),
-			attribute.String("version", Version),
-		)),
-	)
-	otel.SetTracerProvider(tp)
-	return tp, nil
 }

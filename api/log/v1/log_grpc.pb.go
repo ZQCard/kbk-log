@@ -13,6 +13,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -32,7 +33,7 @@ type LogServiceClient interface {
 	// 列表
 	GetLogList(ctx context.Context, in *GetLogListReq, opts ...grpc.CallOption) (*GetLogListPageRes, error)
 	// 创建
-	CreateLog(ctx context.Context, in *CreateLogReq, opts ...grpc.CallOption) (*CheckResponse, error)
+	CreateLog(ctx context.Context, in *CreateLogReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type logServiceClient struct {
@@ -52,8 +53,8 @@ func (c *logServiceClient) GetLogList(ctx context.Context, in *GetLogListReq, op
 	return out, nil
 }
 
-func (c *logServiceClient) CreateLog(ctx context.Context, in *CreateLogReq, opts ...grpc.CallOption) (*CheckResponse, error) {
-	out := new(CheckResponse)
+func (c *logServiceClient) CreateLog(ctx context.Context, in *CreateLogReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, LogService_CreateLog_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -68,7 +69,7 @@ type LogServiceServer interface {
 	// 列表
 	GetLogList(context.Context, *GetLogListReq) (*GetLogListPageRes, error)
 	// 创建
-	CreateLog(context.Context, *CreateLogReq) (*CheckResponse, error)
+	CreateLog(context.Context, *CreateLogReq) (*emptypb.Empty, error)
 	mustEmbedUnimplementedLogServiceServer()
 }
 
@@ -79,7 +80,7 @@ type UnimplementedLogServiceServer struct {
 func (UnimplementedLogServiceServer) GetLogList(context.Context, *GetLogListReq) (*GetLogListPageRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLogList not implemented")
 }
-func (UnimplementedLogServiceServer) CreateLog(context.Context, *CreateLogReq) (*CheckResponse, error) {
+func (UnimplementedLogServiceServer) CreateLog(context.Context, *CreateLogReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateLog not implemented")
 }
 func (UnimplementedLogServiceServer) mustEmbedUnimplementedLogServiceServer() {}

@@ -7,14 +7,13 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/ZQCard/kbk-log/internal/biz"
 	"github.com/ZQCard/kbk-log/internal/conf"
 	"github.com/ZQCard/kbk-log/internal/data"
 	"github.com/ZQCard/kbk-log/internal/server"
 	"github.com/ZQCard/kbk-log/internal/service"
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
-	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 import (
@@ -24,7 +23,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(env *conf.Env, confServer *conf.Server, registry *conf.Registry, confData *conf.Data, bootstrap *conf.Bootstrap, logger log.Logger, tracerProvider *trace.TracerProvider) (*kratos.App, func(), error) {
+func wireApp(env *conf.Env, confServer *conf.Server, confData *conf.Data, bootstrap *conf.Bootstrap, logger log.Logger) (*kratos.App, func(), error) {
 	db := data.NewMysqlCmd(bootstrap, logger)
 	client := data.NewRedisClient(confData)
 	dataData, cleanup, err := data.NewData(bootstrap, db, client, logger)
@@ -35,9 +34,8 @@ func wireApp(env *conf.Env, confServer *conf.Server, registry *conf.Registry, co
 	logUsecase := biz.NewLogUsecase(logRepo, logger)
 	logService := service.NewLogService(logUsecase, logger)
 	grpcServer := server.NewGRPCServer(confServer, logService, logger)
-	httpServer := server.NewHTTPServer(confServer, logService, tracerProvider, logger)
-	registrar := data.NewRegistrar(registry)
-	app := newApp(logger, grpcServer, httpServer, registrar)
+	httpServer := server.NewHTTPServer(confServer, logService, logger)
+	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()
 	}, nil

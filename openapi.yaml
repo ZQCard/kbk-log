@@ -84,18 +84,9 @@ paths:
             responses:
                 "200":
                     description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/log.v1.CheckResponse'
+                    content: {}
 components:
     schemas:
-        log.v1.CheckResponse:
-            type: object
-            properties:
-                success:
-                    type: boolean
-            description: 响应 - 检查是否处理成功
         log.v1.CreateLogReq:
             type: object
             properties:
@@ -125,7 +116,7 @@ components:
                     description: 请求内容
                 code:
                     type: string
-                    description: 响应内容
+                    description: 响应编码
                 reason:
                     type: string
                     description: 提示信息

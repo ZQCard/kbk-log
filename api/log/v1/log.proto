@@ -9,6 +9,9 @@ import "validate/validate.proto";
 
 import "openapiv3/annotations.proto";
 
+import "google/protobuf/empty.proto";
+
+
 option go_package = "github.com/ZQCard/kbk-log/api/log/v1";
 
 option (openapi.v3.document) = {
@@ -34,7 +37,7 @@ service LogService {
     };
 
     // 创建
-    rpc CreateLog(CreateLogReq) returns(CheckResponse){
+    rpc CreateLog(CreateLogReq) returns(google.protobuf.Empty){
         option (google.api.http) = { 
             post:"/log"  
             body:"*"
@@ -60,7 +63,7 @@ message CreateLogReq {
     string path = 8;
     // 请求内容
     string request = 9;
-    // 响应内容
+    // 响应编码
     string code = 10;
     // 提示信息
     string reason = 11;
@@ -145,9 +148,4 @@ message  GetLogListReq {
      string ip = 8;
      // trace_id
      string trace_id = 9;
-}
-
-// 响应 - 检查是否处理成功
-message CheckResponse {
-    bool success = 1;
 }

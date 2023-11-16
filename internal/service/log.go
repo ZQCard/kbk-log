@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	logV1 "github.com/ZQCard/kbk-log/api/log/v1"
 	"github.com/ZQCard/kbk-log/internal/biz"
@@ -45,12 +46,6 @@ func (s *LogService) GetLogList(ctx context.Context, req *logV1.GetLogListReq) (
 	return res, nil
 }
 
-func (s *LogService) CreateLog(ctx context.Context, req *logV1.CreateLogReq) (*logV1.CheckResponse, error) {
-	err := s.logUsecase.CreateLog(ctx, domain.ToDomainLog(req))
-	if err != nil {
-		return nil, err
-	}
-	return &logV1.CheckResponse{
-		Success: true,
-	}, err
+func (s *LogService) CreateLog(ctx context.Context, req *logV1.CreateLogReq) (*emptypb.Empty, error) {
+	return &emptypb.Empty{}, s.logUsecase.CreateLog(ctx, domain.ToDomainLog(req))
 }

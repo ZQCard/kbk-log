@@ -1,5 +1,5 @@
 service:
-  name: kbk.log.service
+  name: api-log
   version: v1
 env:
   mode: dev
@@ -16,11 +16,7 @@ data:
     source: root:root@tcp(127.0.0.1:3306)/kbk-log?parseTime=true&collation=utf8mb4_unicode_ci&loc=Asia%2FShanghai&charset=utf8mb4
   redis:
     addr: 127.0.0.1:6379
-    password:
+    password: ""
     read_timeout: 0.2s
     write_timeout: 0.2s
     prefix: kbk-log_
-trace:
-  endpoint: http://127.0.0.1:14268/api/traces
-etcd:
-  address: 127.0.0.1:2379

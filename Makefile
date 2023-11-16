@@ -60,7 +60,7 @@ errors:
 .PHONY: build
 # build
 build:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
+	mkdir -p bin/ && GOPROXY=https://goproxy.cn CGO_ENABLED=0 GOOS=linux go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
 .PHONY: generate
 # generate
@@ -126,17 +126,15 @@ initNewService:
 # 使用docker部署服务
 .PHONY: docker
 docker:
-	@git add .
-	@git commit -m 'update'
-	@git pull
-	@docker build -t kbk-log .
+	@make build
+	@docker build -t charging-station-log .
 	@echo "docker build success"
-	@container_id=$$(docker ps -a -f name=kbk-log -q); \
+	@container_id=$$(docker ps -a -f name=charging-station-log -q); \
     if [ -n "$$container_id" ]; then \
         docker rm -f "$$container_id"; \
-        echo "Container kbk-log deleted"; \
+        echo "Container charging-station-log deleted"; \
     else \
-        echo "Container kbk-log not found"; \
+        echo "Container charging-station-log not found"; \
     fi
-	docker run -itd --name kbk-log -p 8030:8000 -p 9030:9000 -v /data/project/kratos-base-kit/kbk-log/configs/:/data/conf kbk-log
+	docker run -itd --name charging-station-log -p 20030:8000 -p 20031:9000 -v /data/project/charging-station/charging-station-log/configs/:/data/conf charging-station-log
 	@echo "docker start success"

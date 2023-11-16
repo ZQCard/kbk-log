@@ -40,6 +40,8 @@ type Log struct {
 	IP string
 	// 响应时长
 	Latency string
+	// 响应内容
+	Response string
 	// 创建时间
 	CreatedAt string
 }
